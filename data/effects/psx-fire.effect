@@ -1,0 +1,68 @@
+// PSX Fire: maps the heat grid (R8, values 0..36) through the 37-colour palette.
+// "Draw" keeps hard pixels; "DrawSmooth" filters both lookups, so neighbouring
+// heat values blend into a smooth gradient instead of a blurry index.
+
+uniform float4x4 ViewProj;
+uniform texture2d image;
+uniform texture2d palette;
+
+sampler_state point_clamp {
+	Filter   = Point;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+sampler_state linear_clamp {
+	Filter   = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+struct VertData {
+	float4 pos : POSITION;
+	float2 uv  : TEXCOORD0;
+};
+
+VertData VSDefault(VertData v_in)
+{
+	VertData v_out;
+	v_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
+	v_out.uv  = v_in.uv;
+	return v_out;
+}
+
+float2 palette_uv(float v)
+{
+	// R8 stores heat / 255; the palette has one texel per heat value
+	return float2((v * 255.0 + 0.5) / 37.0, 0.5);
+}
+
+float4 PSDraw(VertData v_in) : TARGET
+{
+	float v = image.Sample(point_clamp, v_in.uv).r;
+	return palette.Sample(point_clamp, palette_uv(v));
+}
+
+float4 PSDrawSmooth(VertData v_in) : TARGET
+{
+	float v = image.Sample(linear_clamp, v_in.uv).r;
+	return palette.Sample(linear_clamp, palette_uv(v));
+}
+
+technique Draw
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSDraw(v_in);
+	}
+}
+
+technique DrawSmooth
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSDrawSmooth(v_in);
+	}
+}
