@@ -5,7 +5,9 @@
             "baseUrl": "https://github.com/obsproject/obs-studio/archive/refs/tags",
             "label": "OBS sources",
             "hashes": {
-                "windows-x64": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a"
+                "macos": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a",
+                "windows-x64": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a",
+                "ubuntu-26.04-x86_64": "ba2269e16c46c004eda8276bc7334f64fd462f29126dc2fd995f079e86093259"
             }
         },
         "prebuilt": {
@@ -13,6 +15,7 @@
             "baseUrl": "https://github.com/obsproject/obs-deps/releases/download",
             "label": "Pre-Built obs-deps",
             "hashes": {
+                "macos": "6ded92c5d97f1d1b5effa07be13cc9f539826aa9c65013a15872328e39acffbf",
                 "windows-x64": "7508972a867a0ef68c26cd8bdba61fd999edd0a92fa9eb9585774de9bf51bfbe"
             }
         },
