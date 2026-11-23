@@ -6,7 +6,8 @@
             "label": "OBS sources",
             "hashes": {
                 "macos": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a",
-                "windows-x64": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a"
+                "windows-x64": "755598c6051dc40c92092932a33de254b0fa9c97fb9af72f8fcf7be66c4ea91a",
+                "ubuntu-26.04-x86_64": "ba2269e16c46c004eda8276bc7334f64fd462f29126dc2fd995f079e86093259"
             }
         },
         "prebuilt": {
