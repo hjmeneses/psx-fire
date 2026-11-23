@@ -35,10 +35,17 @@ if (( ! (${skips[(Ie)all]} + ${skips[(Ie)deps]}) )) {
     sudo apt-get install ${apt_args} gcc-${${target##*-}//_/-}-linux-gnu g++-${${target##*-}//_/-}-linux-gnu
   }
 
-  local obs_version obs_hash obs_package
+  # Pinned OBS release package for the runner's Ubuntu version and architecture
+  local ubuntu_version host_arch obs_version obs_hash obs_package
+  ubuntu_version=$(. /etc/os-release && print -r -- ${VERSION_ID})
+  host_arch=$(uname -m)
   obs_version=$(jq -er '.dependencies["obs-studio"].version' buildspec.json)
-  obs_hash=$(jq -er '.dependencies["obs-studio"].hashes["ubuntu-26.04-x86_64"]' buildspec.json)
-  obs_package="./.deps/OBS-Studio-${obs_version}-Ubuntu-26.04-x86_64.deb"
+  obs_hash=$(jq -er --arg key "ubuntu-${ubuntu_version}-${host_arch}" \
+    '.dependencies["obs-studio"].hashes[$key]' buildspec.json) || {
+    log_error "buildspec.json has no obs-studio hash for 'ubuntu-${ubuntu_version}-${host_arch}'."
+    return 2
+  }
+  obs_package="./.deps/OBS-Studio-${obs_version}-Ubuntu-${ubuntu_version}-${host_arch}.deb"
 
   mkdir -p .deps
   curl --fail --location --silent --show-error --retry 3 --output "${obs_package}" \
@@ -51,23 +58,6 @@ if (( ! (${skips[(Ie)all]} + ${skips[(Ie)deps]}) )) {
     libsimde-dev \
     "${obs_package}"
 
-  local -a _qt_packages=()
-
-  if (( QT_VERSION == 5 )) {
-    _qt_packages+=(
-      qtbase5-dev${suffix}
-      libqt5svg5-dev${suffix}
-      qtbase5-private-dev${suffix}
-      libqt5x11extras5-dev${suffix}
-    )
-  } else {
-    _qt_packages+=(
-      qt6-base-dev${suffix}
-      libqt6svg6-dev${suffix}
-      qt6-base-private-dev${suffix}
-    )
-  }
-
-  sudo apt-get install ${apt_args} ${_qt_packages}
+  # PSX Fire does not use Qt (ENABLE_QT is OFF), so no Qt dev packages are installed
   log_group
 }

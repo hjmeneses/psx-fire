@@ -18,7 +18,8 @@ function(_check_dependencies_macos)
   set(qt6_destination "obs-deps-qt6-VERSION-ARCH")
   set(obs-studio_filename "VERSION.zip")
   set(obs-studio_destination "obs-studio-VERSION")
-  set(dependencies_list prebuilt qt6 obs-studio)
+  # PSX Fire no usa Qt: se omite para no descargar Qt6
+  set(dependencies_list prebuilt obs-studio)
 
   _check_dependencies()
 
