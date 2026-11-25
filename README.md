@@ -4,6 +4,8 @@
 
 Fuente para OBS Studio con el fuego de la pantalla de título del DOOM de PlayStation, simulado en tiempo real con el algoritmo y la paleta de 37 colores originales, tal como los documentó Fabien Sanglard en [“How DOOM fire was done”](https://fabiensanglard.net/doom_fire_psx/).
 
+<img src="images/psx-fire.gif" alt="El fuego de PSX Fire en movimiento sobre fondo negro" width="720">
+
 - La simulación corre en la CPU, un byte por celda; la paleta, la transparencia y el escalado los aplica un shader en la GPU.
 - Fondo transparente con fundido configurable, para ponerlo encima de la cámara o de cualquier escena.
 - Viento, enfriamiento, pasos por segundo y tamaño de pixel.
